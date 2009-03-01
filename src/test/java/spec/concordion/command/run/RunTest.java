@@ -7,7 +7,7 @@ import test.concordion.TestRig;
 public class RunTest extends ConcordionTestCase{
 	public String successOrFailure(String fragment, String expectedResult, String evaluationResult) {
 		
-		System.setProperty("concordion.runner.testrunner", RunTestRunner.class.getName());
+		System.setProperty("concordion.runner.concordion", RunTestRunner.class.getName());
 		RunTestRunner.result = new Boolean(expectedResult);
         return new TestRig()
             .withStubbedEvaluationResult(evaluationResult)

@@ -8,17 +8,47 @@
     <h1>run</h1>
 
     <p>
-        An <code>run</code> command lets you run an other test from this test. The purpose is to support suites better.
+        The <code>run</code> command lets you run another test from this
+        test, in a similar way to JUnit test-suites. This can be a useful
+        way to view progress on a set of acceptance tests for a story.
     </p>        
+
+	<p>
+		The format is:
+	</p>		
+<pre>
+&lt;a concordion:run="<i>runner-name</i>" href="<i>relative-link</i>"&gt;some link text&lt;/a&gt;</pre>
+
+	<p>
+		The <i>runner-name</i> should normally be <code>"concordion"</code>. However, it 
+		is possible to implement your own runners (e.g. to run tests implemented in another tool)
+		by subclassing <code>org.concordion.api.Runner</code>
+		and then either specifying the full name of your Runner class, or an alias with
+		the full class name specified as a System parameter (concordion.runner.<i>alias</i> = <i>full-class-name</i>). 
+	</p>
+
+	<div class="example">        
+
+        <h3>Example 1</h3>
+
+        <p>Here we run the test for the 
+           <a concordion:run="concordion" href="../set/Set.html">set command</a>
+		   using this HTML:</p>        
+<pre>
+&lt;a concordion:run="concordion" href="../set/Set.html"&gt;set command&lt;/a&gt;</pre>
+        
+    </div>        
     
     <div class="example">
 
-        <h3>Example</h3>
+        <h3>Example 2</h3>
         
         <p>The following instrumentation:</p>
 <pre concordion:set="#snippet">
 &lt;p&gt;
-&lt;a concordion:run="testrunner" href="RunTrue.html"&gt;Will execute RunTrue.html with true result&lt;/a&gt;
+   &lt;a concordion:run="concordion" href="PassingSpec.html"&gt;
+      My spec
+   &lt;/a&gt;
 &lt;/p&gt; 
 </pre>		
         <p>We get the following outcomes depending on the result of the RunTestRunner:</p>
@@ -30,17 +60,17 @@
                 <th concordion:assertEquals="#outcome">Outcome</th>
             </tr>
             <tr>
-                <td>RunTrue.html</td>
+                <td>PassingSpec.html</td>
                 <td>true</td>
                 <td>SUCCESS</td>
             </tr>
             <tr>
-                <td>NotExisting.html</td>				
+                <td>FailingSpec.html</td>				
                 <td>false</td>
                 <td>FAILURE</td>
             </tr>
         </table>
-        
     </div>        
+
 </body>
 </html>

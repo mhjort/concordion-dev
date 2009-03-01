@@ -5,7 +5,7 @@ import org.concordion.api.Runner;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 
-public class ConcordionRunner implements Runner{
+public class DefaultConcordionRunner implements Runner {
 
 	public boolean execute(Resource resource, String href) throws Exception {
 		String name = resource.getName();

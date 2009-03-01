@@ -10,13 +10,12 @@ public class RunTestRunner implements Runner {
 	
 	public void setTestParam(String param){
 		this.param  = param;
-		
 	}
 	
 	public boolean execute(Resource resource, String href) throws Exception {
-		if(!param.equals(href))
+		if(!param.equals(href)) {
 			throw new RuntimeException("testParam not set");
+		}
 		return result;
 	}
-
 }

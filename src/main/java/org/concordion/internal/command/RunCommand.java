@@ -9,6 +9,7 @@ import org.concordion.api.ResultRecorder;
 import org.concordion.api.Runner;
 import org.concordion.internal.CommandCall;
 import org.concordion.internal.RunListener;
+import org.concordion.internal.runner.DefaultConcordionRunner;
 import org.concordion.internal.util.Announcer;
 import org.concordion.internal.util.Check;
 
@@ -33,7 +34,7 @@ public class RunCommand extends AbstractCommand {
 		
 		String href = element.getAttributeValue("href");
 		
-		Check.notNull(href, "a href attribute must be set for element containing concordion:run");
+		Check.notNull(href, "The 'href' attribute must be set for an element containing concordion:run");
 		
 		String runnerType = commandCall.getExpression();
 		
@@ -42,24 +43,25 @@ public class RunCommand extends AbstractCommand {
 			evaluator.evaluate(expression);
 		
 		String concordionRunner = null;
-		if("concordion".equals(runnerType)){
-			concordionRunner = "org.concordion.internal.runner.ConcordionRunner";
-		}
-		if(concordionRunner == null){
-			concordionRunner = System.getProperty("concordion.runner." + runnerType);
+		
+		concordionRunner = System.getProperty("concordion.runner." + runnerType);
+		
+		if(concordionRunner == null && "concordion".equals(runnerType)){
+			concordionRunner = DefaultConcordionRunner.class.getName();
 		}
 		if(concordionRunner == null){
 			try {
 				Class.forName(runnerType);
 				concordionRunner = runnerType;
 			} catch (ClassNotFoundException e1) {
+			    // OK, we're reporting this in a second.
 			}
 		}
 	
-		Check.notNull(concordionRunner, "the runner indicated [" + runnerType + "] can not be found. " +
-				"Make sure that the concordion.runner." + runnerType + 
-					" System property is set to a name of an org.concordion.Runner implementation " +
-						"or the value of this attribute is a class name of an org.concordion.Runner implementation.");
+		Check.notNull(concordionRunner, "The runner '" + runnerType + "' cannot be found. " +
+				"Choices: (1) Use 'concordion' as your runner (2) Ensure that the 'concordion.runner." + runnerType + 
+					"' System property is set to a name of an org.concordion.Runner implementation " +
+						"(3) Specify a full class name of an org.concordion.Runner implementation");
 		try {
 			Class<?> clazz = Class.forName(concordionRunner);
 			Runner runner = (Runner)clazz.newInstance();
