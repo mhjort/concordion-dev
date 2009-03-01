@@ -68,7 +68,8 @@ public class DocumentParser {
     }
 
     private Command createSpecificationCommand() {
-        return createCommand("", "specification");
+        Command specCmd = createCommand("", "specification");
+        return specCmd;
     }
 
     private Command createCommand(String namespaceURI, String commandName) {

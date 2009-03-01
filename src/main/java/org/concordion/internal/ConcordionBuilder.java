@@ -62,7 +62,7 @@ public class ConcordionBuilder {
     {
         throwableListenerPublisher.addThrowableListener(new ThrowableRenderer());
         
-        withApprovedCommand("", "specification", specificationCommand);
+        commandRegistry.register("", "specification", specificationCommand);
         withApprovedCommand(NAMESPACE_CONCORDION_2007, "run", runCommand);
         withApprovedCommand(NAMESPACE_CONCORDION_2007, "execute", executeCommand);
         withApprovedCommand(NAMESPACE_CONCORDION_2007, "set", new SetCommand());
