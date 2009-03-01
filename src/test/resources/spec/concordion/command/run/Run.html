@@ -1,0 +1,46 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+    <link href="../../../../concordion.css" rel="stylesheet" type="text/css" />
+    <title>"run"</title>
+</head>    
+<body>
+
+    <h1>run</h1>
+
+    <p>
+        An <code>run</code> command lets you run an other test from this test. The purpose is to support suites better.
+    </p>        
+    
+    <div class="example">
+
+        <h3>Example</h3>
+        
+        <p>The following instrumentation:</p>
+<pre concordion:set="#snippet">
+&lt;p&gt;
+&lt;a concordion:run="testrunner" href="RunTrue.html"&gt;Will execute RunTrue.html with true result&lt;/a&gt;
+&lt;/p&gt; 
+</pre>		
+        <p>We get the following outcomes depending on the result of the RunTestRunner:</p>
+
+        <table concordion:execute="#outcome = successOrFailure(#snippet, #expectedResult, #testParam)">
+            <tr>
+				<th concordion:set="#testParam">Expected Href</th>
+                <th concordion:set="#expectedResult">Run Result</th>
+                <th concordion:assertEquals="#outcome">Outcome</th>
+            </tr>
+            <tr>
+                <td>RunTrue.html</td>
+                <td>true</td>
+                <td>SUCCESS</td>
+            </tr>
+            <tr>
+                <td>NotExisting.html</td>				
+                <td>false</td>
+                <td>FAILURE</td>
+            </tr>
+        </table>
+        
+    </div>        
+</body>
+</html>
