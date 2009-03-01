@@ -27,6 +27,7 @@ import org.concordion.internal.listener.AssertEqualsResultRenderer;
 import org.concordion.internal.listener.BreadcrumbRenderer;
 import org.concordion.internal.listener.DocumentStructureImprover;
 import org.concordion.internal.listener.PageFooterRenderer;
+import org.concordion.internal.listener.RunResultRenderer;
 import org.concordion.internal.listener.SpecificationExporter;
 import org.concordion.internal.listener.StylesheetEmbedder;
 import org.concordion.internal.listener.ThrowableRenderer;
@@ -75,6 +76,7 @@ public class ConcordionBuilder {
         assertTrueCommand.addAssertEqualsListener(new AssertEqualsResultRenderer());
         assertFalseCommand.addAssertEqualsListener(new AssertEqualsResultRenderer());
         verifyRowsCommand.addVerifyRowsListener(new VerifyRowsResultRenderer());
+        runCommand.addRunListener(new RunResultRenderer());
         documentParser.addDocumentParsingListener(new DocumentStructureImprover());
         String stylesheetContent = IOUtil.readResourceAsString(EMBEDDED_STYLESHEET_RESOURCE);
         documentParser.addDocumentParsingListener(new StylesheetEmbedder(stylesheetContent));
