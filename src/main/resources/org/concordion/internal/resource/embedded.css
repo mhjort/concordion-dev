@@ -72,6 +72,9 @@ p.success {
   text-decoration: line-through;
   color: #bb5050;
 }
+.ignored, .ignored * {
+  background-color: #f0f0f0 !important;	
+}
 
 ins {
   text-decoration: none;	

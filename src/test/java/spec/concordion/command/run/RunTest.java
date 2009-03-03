@@ -1,14 +1,15 @@
 package spec.concordion.command.run;
 
+import org.concordion.api.Result;
 import org.concordion.integration.junit3.ConcordionTestCase;
 
 import test.concordion.TestRig;
 
 public class RunTest extends ConcordionTestCase{
-	public String successOrFailure(String fragment, String expectedResult, String evaluationResult) {
+	public String successOrFailure(String fragment, String hardCodedTestResult, String evaluationResult) {
 		
 		System.setProperty("concordion.runner.concordion", RunTestRunner.class.getName());
-		RunTestRunner.result = new Boolean(expectedResult);
+		RunTestRunner.result = Result.valueOf(hardCodedTestResult);
         return new TestRig()
             .withStubbedEvaluationResult(evaluationResult)
             .processFragment(fragment)

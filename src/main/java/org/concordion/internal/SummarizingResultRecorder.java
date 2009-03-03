@@ -4,9 +4,11 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.concordion.api.ExpectedToFail;
 import org.concordion.api.Result;
 import org.concordion.api.ResultRecorder;
 import org.concordion.api.ResultSummary;
+import org.concordion.api.Unimplemented;
 
 public class SummarizingResultRecorder implements ResultRecorder, ResultSummary {
 
@@ -17,20 +19,27 @@ public class SummarizingResultRecorder implements ResultRecorder, ResultSummary 
     }
     
     public void assertIsSatisfied() {
-        if (hasFailures()) {
-            throw new AssertionError("Specification has failure(s). See output HTML for details.");
-        }
-        if (hasExceptions()) {
-            throw new AssertionError("Specification has exception(s). See output HTML for details.");
-        }
+        assertIsSatisfied(this);
     }
 
+    public void assertIsSatisfied(Object fixture) {
+        FixtureState state = getFixtureState(fixture);
+        state.assertIsSatisfied(getSuccessCount(), getFailureCount(), getExceptionCount());
+    }
+
+    private FixtureState getFixtureState(Object fixture) {
+        FixtureState state = FixtureState.EXPECTED_TO_PASS;
+        if (fixture.getClass().getAnnotation(ExpectedToFail.class) != null) {
+            state = FixtureState.EXPECTED_TO_FAIL;
+        }
+        if (fixture.getClass().getAnnotation(Unimplemented.class) != null) {
+            state = FixtureState.UNIMPLEMENTED;
+        }
+        return state;
+    }
+    
     public boolean hasExceptions() {
         return getExceptionCount() > 0;
-    }
-
-    private boolean hasFailures() {
-        return getFailureCount() > 0;
     }
 
     public long getCount(Result result) {
@@ -56,12 +65,16 @@ public class SummarizingResultRecorder implements ResultRecorder, ResultSummary 
     }
 
     public void print(PrintStream out) {
+        print(out, this);
+    }
+
+    public void print(PrintStream out, Object fixture) {
         out.print("Successes: " + getSuccessCount());
         out.print(", Failures: " + getFailureCount());
         if (hasExceptions()) {
             out.print(", Exceptions: " + getExceptionCount());
         }
+        getFixtureState(fixture).printNote(out);
         out.println("\n");
     }
-
 }

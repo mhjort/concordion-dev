@@ -1,21 +1,23 @@
 package spec.concordion.command.run;
 
 import org.concordion.api.Resource;
+import org.concordion.api.Result;
 import org.concordion.api.Runner;
+import org.concordion.api.RunnerResult;
 
 public class RunTestRunner implements Runner {
 
-	public static boolean result = true;
+	public static Result result = null;
 	private String param = "";
 	
 	public void setTestParam(String param){
 		this.param  = param;
 	}
 	
-	public boolean execute(Resource resource, String href) throws Exception {
+	public RunnerResult execute(Resource resource, String href) throws Exception {
 		if(!param.equals(href)) {
 			throw new RuntimeException("testParam not set");
 		}
-		return result;
+		return new RunnerResult(result);
 	}
 }

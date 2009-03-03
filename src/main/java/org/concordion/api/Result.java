@@ -5,5 +5,6 @@ public enum Result {
 
     SUCCESS,
     FAILURE, 
-    EXCEPTION;
+    EXCEPTION,
+    IGNORED;
 }

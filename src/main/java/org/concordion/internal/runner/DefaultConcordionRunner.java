@@ -1,19 +1,32 @@
 package org.concordion.internal.runner;
 
+import org.concordion.api.ExpectedToFail;
 import org.concordion.api.Resource;
+import org.concordion.api.Result;
 import org.concordion.api.Runner;
+import org.concordion.api.RunnerResult;
 import org.junit.runner.JUnitCore;
-import org.junit.runner.Result;
 
 public class DefaultConcordionRunner implements Runner {
 
-	public boolean execute(Resource resource, String href) throws Exception {
+	public RunnerResult execute(Resource resource, String href) throws Exception {
 		String name = resource.getName();
 		Resource hrefResource = resource.getParent().getRelativeResource(href);
 		name = hrefResource.getPath().replaceFirst("/", "").replace("/", ".").replaceAll("\\.html$", "Test");
 		Class<?> concordionClass = Class.forName(name);
-		Result result = JUnitCore.runClasses(concordionClass);
-		return result.wasSuccessful();			
+		org.junit.runner.Result jUnitResult = JUnitCore.runClasses(concordionClass);
+		
+		Result result = Result.FAILURE;
+		if (jUnitResult.wasSuccessful()) {
+		    result = Result.SUCCESS;
+		    if (isOnlySuccessfulBecauseItWasExpectedToFail(concordionClass)) {
+		        result = Result.IGNORED;
+		    }
+		}
+		return new RunnerResult(result);			
 	}
 
+    private boolean isOnlySuccessfulBecauseItWasExpectedToFail(Class<?> concordionClass) {
+        return concordionClass.getAnnotation(ExpectedToFail.class) != null;
+    }
 }

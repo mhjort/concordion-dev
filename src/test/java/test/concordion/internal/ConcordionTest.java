@@ -58,7 +58,7 @@ public class ConcordionTest {
 		}
 	}
 
-	@Test
+    @Test
 	public void testProcessSuccess() throws IOException {
 		String fileName = "HelloBob.html";
 		addDocumentToSource(fileName, DUMMY_RESOURCE);
@@ -70,7 +70,7 @@ public class ConcordionTest {
 		
 		assertSummaryNumbers(summary, 1, 0, 0);
 		try {
-			summary.assertIsSatisfied();
+			summary.assertIsSatisfied(fixture);
 		} catch (AssertionError e) {
 			String xml = target.getWrittenString(resource);
 			System.err.println(xml);
@@ -95,7 +95,7 @@ public class ConcordionTest {
 		
 		assertSummaryNumbers(summary, 0, 1, 0);
 		try {
-			summary.assertIsSatisfied();
+			summary.assertIsSatisfied(fixture);
 		} catch (AssertionError e) {
 			String xml = target.getWrittenString(resource);
 			// System.out.println(e.getMessage());
@@ -122,7 +122,7 @@ public class ConcordionTest {
 		
 		assertSummaryNumbers(summary, 0, 0, 0);
 		try {
-			summary.assertIsSatisfied();
+			summary.assertIsSatisfied(fixture);
 		} catch (AssertionError e) {
 			Resource resource = new Resource(resourceName);
 			String xml = target.getWrittenString(resource);

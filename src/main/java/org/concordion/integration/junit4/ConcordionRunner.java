@@ -100,8 +100,8 @@ public class ConcordionRunner extends BlockJUnit4ClassRunner {
         return new Statement() {
             public void evaluate() throws Throwable {
                 ResultSummary resultSummary = new ConcordionBuilder().build().process(fixture);
-                resultSummary.print(System.out);
-                resultSummary.assertIsSatisfied();
+                resultSummary.print(System.out, fixture);
+                resultSummary.assertIsSatisfied(fixture);
             }
         };
     }

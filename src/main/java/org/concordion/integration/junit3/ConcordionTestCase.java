@@ -9,7 +9,7 @@ public abstract class ConcordionTestCase extends TestCase {
 
     public void testProcessSpecification() throws Throwable {
         ResultSummary resultSummary = new ConcordionBuilder().build().process(this);
-        resultSummary.print(System.out);
-        resultSummary.assertIsSatisfied();
+        resultSummary.print(System.out, this);
+        resultSummary.assertIsSatisfied(this);
     }
 }
