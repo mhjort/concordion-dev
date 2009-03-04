@@ -185,4 +185,10 @@ public final class Element {
         Element[] descendantElements = getDescendantElements(name);
         return descendantElements.length == 0 ? null : descendantElements[0];
     }
+
+    public void appendSister(Element element) {
+        nu.xom.Element xomParentElement = (nu.xom.Element) xomElement.getParent();
+        int elementIndex = xomParentElement.indexOf(xomElement);
+        xomParentElement.insertChild(element.xomElement, elementIndex + 1);
+    }
 }

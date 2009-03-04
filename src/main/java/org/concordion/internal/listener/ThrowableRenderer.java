@@ -22,6 +22,13 @@ public class ThrowableRenderer implements ThrowableCaughtListener {
         
         Element element = event.getElement();
         element.appendChild(expectedSpan(element));
+        
+        // Special handling for <a> tags to avoid the stack-trace being inside the link text
+        if (element.getLocalName().equals("a")) {
+            Element div = new Element("div"); 
+            element.appendSister(div);
+            element = div;
+        }
         element.appendChild(exceptionMessage(event.getThrowable().getMessage()));
         element.appendChild(stackTraceTogglingButton());
         element.appendChild(stackTrace(event.getThrowable(), event.getExpression()));
