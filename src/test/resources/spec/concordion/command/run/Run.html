@@ -21,15 +21,12 @@
 
 	<p>
 		The <i>runner-name</i> should normally be <code>"concordion"</code>. However, it 
-		is possible to implement your own runners (e.g. to run tests implemented in another tool)
-		by subclassing <code>org.concordion.api.Runner</code>
-		and then either specifying the full name of your Runner class, or an alias with
-		the full class name specified as a System parameter (concordion.runner.<i>alias</i> = <i>full-class-name</i>). 
+		is possible to implement your own runners to run tests implemented in another tool.
 	</p>
 
 	<div class="example">        
 
-        <h3>Example 1</h3>
+        <h3>Example</h3>
 
         <p>Here we run the test for the 
            <a concordion:run="concordion" href="../set/Set.html">set command</a>
@@ -38,39 +35,13 @@
 &lt;a concordion:run="concordion" href="../set/Set.html"&gt;set command&lt;/a&gt;</pre>
         
     </div>        
-    
-    <div class="example">
 
-        <h3>Example 2</h3>
-        
-        <p>The following instrumentation:</p>
-<pre concordion:set="#snippet">
-&lt;p&gt;
-   &lt;a concordion:run="concordion" href="PassingSpec.html"&gt;
-      My spec
-   &lt;/a&gt;
-&lt;/p&gt; 
-</pre>		
-        <p>We get the following outcomes depending on the result of the RunTestRunner:</p>
+    <h2>Further Details</h2>
 
-        <table concordion:execute="#outcome = successOrFailure(#snippet, #expectedResult, #testParam)">
-            <tr>
-				<th concordion:set="#testParam">Expected Href</th>
-                <th concordion:set="#expectedResult">Run Result</th>
-                <th concordion:assertEquals="#outcome">Outcome</th>
-            </tr>
-            <tr>
-                <td>PassingSpec.html</td>
-                <td>SUCCESS</td>
-                <td>SUCCESS</td>
-            </tr>
-            <tr>
-                <td>FailingSpec.html</td>				
-                <td>FAILURE</td>
-                <td>FAILURE</td>
-            </tr>
-        </table>
-    </div>        
+    <ul>
+        <li><a href="CustomRunner.html">How do you create custom runners?</a></li>
+	</ul>        
+
 
 </body>
 </html>

@@ -9,6 +9,7 @@
     <property name="dir.test.output" value="${dir.build}/test-output"/>
     <property name="dir.concordion.output" value="${dir.test.output}/concordion"/>
     <property name="dir.dist" value="${basedir}/dist"/>
+    <property name="dir.mvn.target" value="${basedir}/target"/>
 
     <path id="compile.classpath">
         <fileset dir="lib" includes="*.jar" excludes="*-src.jar"/>
@@ -25,6 +26,7 @@
         <delete dir="${dir.concordion.output}"/>
         <delete dir="${dir.classes}"/>
         <delete dir="${dir.dist}"/>
+        <delete dir="${dir.mvn.target}"/>
     </target>
 
     <target name="compile">
