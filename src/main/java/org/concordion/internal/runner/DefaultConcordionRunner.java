@@ -5,6 +5,7 @@ import org.concordion.api.Resource;
 import org.concordion.api.Result;
 import org.concordion.api.Runner;
 import org.concordion.api.RunnerResult;
+import org.concordion.api.Unimplemented;
 import org.junit.runner.JUnitCore;
 
 public class DefaultConcordionRunner implements Runner {
@@ -24,7 +25,8 @@ public class DefaultConcordionRunner implements Runner {
 		Result result = Result.FAILURE;
 		if (jUnitResult.wasSuccessful()) {
 		    result = Result.SUCCESS;
-		    if (isOnlySuccessfulBecauseItWasExpectedToFail(concordionClass)) {
+		    if (isOnlySuccessfulBecauseItWasExpectedToFail(concordionClass)
+		     || isOnlySuccessfulBecauseItIsUnimplemented(concordionClass)) {
 		        result = Result.IGNORED;
 		    }
 		}
@@ -33,5 +35,9 @@ public class DefaultConcordionRunner implements Runner {
 
     private boolean isOnlySuccessfulBecauseItWasExpectedToFail(Class<?> concordionClass) {
         return concordionClass.getAnnotation(ExpectedToFail.class) != null;
+    }
+    
+    private boolean isOnlySuccessfulBecauseItIsUnimplemented(Class<?> concordionClass) {
+        return concordionClass.getAnnotation(Unimplemented.class) != null;
     }
 }
