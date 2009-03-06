@@ -12,6 +12,7 @@ import org.concordion.Concordion;
 import org.concordion.api.Resource;
 import org.concordion.api.ResultSummary;
 import org.concordion.internal.ConcordionBuilder;
+import org.concordion.internal.InvalidExpressionException;
 import org.concordion.internal.XMLParser;
 import org.concordion.internal.util.IOUtil;
 import org.junit.Before;
@@ -20,6 +21,16 @@ import org.junit.Test;
 import test.concordion.StubSource;
 import test.concordion.StubTarget;
 
+/**
+ * Tests for the basic behaviour of the Concordion object:
+ * <ul>
+ * <li>the spec is satisfied (green)</li>
+ * <li>the spec is not satisfied (red)</li>
+ * <li>the spec breaks (exception)</li>
+ * </ul>
+ * Some edge cases are tested too, like when the html file does not exist, and others.
+ *
+ */
 public class ConcordionTest {
 
 	private static StubTarget target;
@@ -27,6 +38,7 @@ public class ConcordionTest {
 
 	private static final String NON_EXISTING_RESOURCE = "/does/not/exist";
 	private static final String DUMMY_RESOURCE = "/mytest";
+	private static final String EXCEPTION_MESSAGE = "Custom exception for testing purposes.";
 
 	@Before
 	public void setUp() {
@@ -98,8 +110,6 @@ public class ConcordionTest {
 			summary.assertIsSatisfied(fixture);
 		} catch (AssertionError e) {
 			String xml = target.getWrittenString(resource);
-			// System.out.println(e.getMessage());
-			// System.err.println(xml);
 			Document dom = XMLParser.parse(xml);
 			Nodes failures = dom.query("/html/body//span[@class='failure']");
 			assertEquals(1, failures.size());
@@ -107,6 +117,42 @@ public class ConcordionTest {
 					"del[@class='expected']").get(0).getValue());
 			assertEquals("Hello Bo!", failures.get(0).query(
 					"ins[@class='actual']").get(0).getValue());
+		}
+	}
+
+	@Test
+	public void testProcessException() throws IOException {
+		String fileName = "HelloBob.html";
+		addDocumentToSource(fileName, DUMMY_RESOURCE);
+		Concordion concordion = createConcordion(source, target);
+		
+		Object fixture = new Object() {
+			@SuppressWarnings("unused")
+            public String getGreeting() {
+				throw new RuntimeException(EXCEPTION_MESSAGE);
+			}
+		};
+		Resource resource = new Resource(DUMMY_RESOURCE);
+		ResultSummary summary = concordion.process(resource, fixture);
+		
+		assertSummaryNumbers(summary, 0, 0, 1);
+		try {
+			summary.assertIsSatisfied(fixture);
+		} catch (AssertionError e) {
+			String xml = target.getWrittenString(resource);
+			Document dom = XMLParser.parse(xml);
+			Nodes failures = dom.query("/html/body//span[@class='failure']");
+			assertEquals(1, failures.size());
+			assertEquals("Hello Bob!", failures.get(0).query(
+					"del[@class='expected']").get(0).getValue());
+			assertEquals(EXCEPTION_MESSAGE, dom.query(
+					"/html/body//span[@class='exceptionMessage']").get(0).getValue());
+			assertEquals("View Stack",dom.query(
+					"/html/body//input[@class='stackTraceButton']/@value").get(0).getValue());
+			assertEquals("greeting",dom.query(
+					"/html/body//span[@class='stackTrace']/p/code").get(0).getValue());
+			assertEquals(InvalidExpressionException.class.getName()+": "+EXCEPTION_MESSAGE, dom.query(
+			"/html/body//span[@class='stackTrace']/span[@class='stackTraceExceptionMessage']").get(0).getValue());
 		}
 	}
 
