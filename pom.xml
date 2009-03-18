@@ -142,6 +142,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<tagBase>https://concordion.googlecode.com/svn/tags/</tagBase>
+					<goals>install source:jar javadoc:jar repository:bundle-create</goals>
 				</configuration>
 			</plugin>
 			
