@@ -142,7 +142,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<tagBase>https://concordion.googlecode.com/svn/tags/</tagBase>
-					<goals>install source:jar javadoc:jar</goals>
+					<goals>source:jar javadoc:jar deploy</goals>
 				</configuration>
 			</plugin>
 			
