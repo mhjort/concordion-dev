@@ -142,7 +142,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<tagBase>https://concordion.googlecode.com/svn/tags/</tagBase>
-					<goals>install source:jar javadoc:jar repository:bundle-create</goals>
+					<goals>install source:jar javadoc:jar</goals>
 				</configuration>
 			</plugin>
 			
@@ -174,31 +174,6 @@
                 </configuration>
             </plugin>
 
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>
-                            jar-with-dependencies
-                        </descriptorRef>
-                    </descriptorRefs>
-                    <descriptors>
-                        <descriptor>
-                            src/main/assembly/distribution.xml
-                        </descriptor>
-                    </descriptors>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attached</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
 
@@ -215,4 +190,50 @@
         </plugins>
     </reporting>
     
+    <distributionManagement>
+    	<repository>
+    		<id>concordion-releases</id>
+    		<uniqueVersion>false</uniqueVersion>
+    		<url>dav:https://concordion.googlecode.com/svn/repos/releases</url>
+    	</repository>
+    	<snapshotRepository>
+    		<id>concordion-snapshots</id>
+    		<uniqueVersion>true</uniqueVersion>
+    		<url>dav:https://concordion.googlecode.com/svn/repos/snapshots</url>
+    	</snapshotRepository>
+    </distributionManagement>
+
+	<profiles>
+		<profile>
+			<id>distribution</id>
+			<build>
+				<plugins>
+		            <plugin>
+		                <artifactId>maven-assembly-plugin</artifactId>
+		                <configuration>
+		                    <descriptorRefs>
+		                        <descriptorRef>
+		                            jar-with-dependencies
+		                        </descriptorRef>
+		                    </descriptorRefs>
+		                    <descriptors>
+		                        <descriptor>
+		                            src/main/assembly/distribution.xml
+		                        </descriptor>
+		                    </descriptors>
+		                </configuration>
+		                <executions>
+		                    <execution>
+		                        <id>make-assembly</id>
+		                        <phase>package</phase>
+		                        <goals>
+		                            <goal>attached</goal>
+		                        </goals>
+		                    </execution>
+		                </executions>
+		            </plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>    
 </project>
