@@ -26,10 +26,22 @@
 
 	<div class="example">        
 
-        <h3>Example</h3>
+        <h3>Examples</h3>
 
-        <p>Here we run the test for the 
-           <a concordion:run="concordion" href="../set/Set.html">set command</a>
+        <p>Here we run  
+           <a concordion:run="concordion" href="CustomRunner.html">a test in the same folder</a>
+		   using this HTML:</p>        
+<pre>
+&lt;a concordion:run="concordion" href="CustomRunner.html"&gt;custom runner command&lt;/a&gt;</pre>
+        
+        <p>Here we run 
+           <a concordion:run="concordion" href="./CustomRunner.html">a test in the same folder</a>
+		   using this HTML:</p>        
+<pre>
+&lt;a concordion:run="concordion" href="./CustomRunner.html"&gt;custom runner command&lt;/a&gt;</pre>
+
+        <p>Here we run  
+           <a concordion:run="concordion" href="../set/Set.html">a test in a different folder</a>
 		   using this HTML:</p>        
 <pre>
 &lt;a concordion:run="concordion" href="../set/Set.html"&gt;set command&lt;/a&gt;</pre>
