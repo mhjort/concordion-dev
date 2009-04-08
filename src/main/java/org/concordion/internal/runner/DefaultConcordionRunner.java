@@ -11,8 +11,9 @@ import org.junit.runner.JUnitCore;
 public class DefaultConcordionRunner implements Runner {
 
 	public RunnerResult execute(Resource resource, String href) throws Exception {
+		String name = resource.getName();
 		Resource hrefResource = resource.getParent().getRelativeResource(href);
-		String name = hrefResource.getPath().replaceFirst("/", "").replace("/", ".").replaceAll("\\.html$", "");
+		name = hrefResource.getPath().replaceFirst("/", "").replace("/", ".").replaceAll("\\.html$", "");
 		Class<?> concordionClass;
 		try {
 		    concordionClass = Class.forName(name);

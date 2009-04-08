@@ -102,8 +102,6 @@ public final class Resource {
         
         String subPath = relativePath;
         
-        subPath = removeDotSlashAtTheBeginnning(subPath);
-        
         Resource p = getPackage();
         while (subPath.startsWith("../")) {
             p = p.getParent();
@@ -119,11 +117,7 @@ public final class Resource {
         return new Resource(p.getPath() + subPath);
     }
 
-    private String removeDotSlashAtTheBeginnning(String subPath) {
-		return subPath.replaceFirst("^./", "");
-	}
-
-	@Override
+    @Override
     public String toString() {
         return "[Resource: " + path + "]";
     }
