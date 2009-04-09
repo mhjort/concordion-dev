@@ -99,22 +99,27 @@ public final class Resource {
 
     public Resource getRelativeResource(String relativePath) {
         Check.isFalse(relativePath.startsWith("/"), "Relative path should not start with a slash");
-        
-        String subPath = relativePath;
-        
+
+        String subPath = removeAnyLeadingDotSlashFrom(relativePath);
+
         Resource p = getPackage();
         while (subPath.startsWith("../")) {
             p = p.getParent();
             if (p == null) {
-                throw new RuntimeException("Path '" + relativePath + "' relative to '" + getPath() + "' " +
-                "evaluates above the root package.");
+                throw new RuntimeException("Path '" + relativePath + "' relative to '" + getPath() + "' "
+                        + "evaluates above the root package.");
             }
             subPath = subPath.replaceFirst("../", "");
         }
 
-        Check.isFalse(subPath.contains("../"), "The ../ operator is currently only supported at the start of expressions");
+        Check.isFalse(subPath.contains("../"),
+                "The ../ operator is currently only supported at the start of expressions");
 
         return new Resource(p.getPath() + subPath);
+    }
+
+    private String removeAnyLeadingDotSlashFrom(String subPath) {
+        return subPath.replaceFirst("^\\./", "");
     }
 
     @Override
