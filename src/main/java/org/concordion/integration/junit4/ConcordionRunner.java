@@ -42,7 +42,8 @@ public class ConcordionRunner extends BlockJUnit4ClassRunner {
      */
     public ConcordionRunner(Class<?> fixtureClass) throws InitializationError {
         super(fixtureClass);
-        fixtureDescription = Description.createTestDescription(fixtureClass, "[Concordion Specification]");
+        String testDescription = ("[Concordion Specification for '" + fixtureClass.getSimpleName()).replaceAll("Test$", "']"); // Based on suggestion by Danny Guerrier
+        fixtureDescription = Description.createTestDescription(fixtureClass, testDescription);
         try {
             fakeMethod = new FakeFrameworkMethod();
         } catch (Exception e) {
