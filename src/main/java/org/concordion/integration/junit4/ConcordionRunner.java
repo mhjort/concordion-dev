@@ -4,8 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.concordion.api.ResultSummary;
-import org.concordion.internal.ConcordionBuilder;
+import org.concordion.internal.FixtureRunner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.Description;
@@ -100,9 +99,7 @@ public class ConcordionRunner extends BlockJUnit4ClassRunner {
     protected Statement specExecStatement(final Object fixture) {
         return new Statement() {
             public void evaluate() throws Throwable {
-                ResultSummary resultSummary = new ConcordionBuilder().build().process(fixture);
-                resultSummary.print(System.out, fixture);
-                resultSummary.assertIsSatisfied(fixture);
+                new FixtureRunner().run(fixture);
             }
         };
     }

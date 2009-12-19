@@ -2,14 +2,11 @@ package org.concordion.integration.junit3;
 
 import junit.framework.TestCase;
 
-import org.concordion.api.ResultSummary;
-import org.concordion.internal.ConcordionBuilder;
+import org.concordion.internal.FixtureRunner;
 
 public abstract class ConcordionTestCase extends TestCase {
 
     public void testProcessSpecification() throws Throwable {
-        ResultSummary resultSummary = new ConcordionBuilder().build().process(this);
-        resultSummary.print(System.out, this);
-        resultSummary.assertIsSatisfied(this);
+        new FixtureRunner().run(this);
     }
 }
