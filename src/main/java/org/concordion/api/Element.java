@@ -7,9 +7,15 @@ import nu.xom.Attribute;
 import nu.xom.Elements;
 import nu.xom.Node;
 import nu.xom.Nodes;
+import nu.xom.XPathContext;
 
 public final class Element {
 
+    public static final String XHTML_PREFIX = "xhtml";
+    public static final String XHTML_URI = "http://www.w3.org/1999/xhtml";
+
+    private static XPathContext namespaceMappings = new XPathContext(XHTML_PREFIX, XHTML_URI);
+    
     private final nu.xom.Element xomElement;
 
     public Element(String name) {
@@ -156,12 +162,16 @@ public final class Element {
 
     public Element[] getDescendantElements(String name) {
         List<Element> descendants = new ArrayList<Element>();
-        Nodes nodes = xomElement.query(".//" + name);
+        Nodes nodes = xomElement.query(xpathForElementName(name), namespaceMappings);
         for (int i = 0; i < nodes.size(); i++) {
             descendants.add(new Element((nu.xom.Element)nodes.get(i)));
         }
         descendants.remove(this);
         return descendants.toArray(new Element[0]);
+    }
+
+    private String xpathForElementName(String name) {
+        return ".//" + name + " | " + ".//" + XHTML_PREFIX + ":" + name;
     }
     
     public Element[] getChildElements(String name) {
